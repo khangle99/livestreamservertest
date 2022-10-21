@@ -1,0 +1,50 @@
+Nhung thu realtime:  change state, swap host, chat trong room
+
+nhung thu k realtime: open room, 
+
+tu dong dong room khi count k con nguoi
+
+
+
+
+#### Co-hosting in a Room
+
+Admin Invite/Accept vs Auto change host
+Invite/Accept sẽ cho streamer chủ động hơn trong việc chuẩn bị on stream
+
+
+Streaming Host switch Strategy
+
+strategy A: Streamkey Sharing (Current Implement)
+Streamkey được chuyển để các singer thay phiên nhau stream , state sẽ update realtime để hiện UI waiting
+admin invite clientA -> clientA accept nhan vi tri hosting -> (waiting state) server broadcast all client de update UI 
+-> 
+
+
+strategy B: Dynamic Stream access link (Streamkey mỗi singer sẽ unique)
+Cập nhật stream access link realmtime cho audience
+
+
+Đánh dấu ai đang stream & gửi streamkey cho ai qua 
+UserStory: Client A (Host A) gửi host cho client B (Host B)
+
+Steps:
+1. client A invite Client B host 
+2. client B accept hosting request
+3. client B change send changeState to room server (to waiting state) / update currentHostUID + broadcast
+4. client B publish stream
+5. Stream room publish callback update room state (to streaming state)
+6. Stream room server broadcast state and current host uid
+
+
+=> streamkey được server gen , phân phát cho các singer host 
+    => host đầu tiên đuọc phát cho admin ngay sau đó (userId đầu)
+=>  Sử dụng flag đánh dấu currentHostUID , gửi stream 
+
+- Quản lý roomState
+1: Tự động trong callback của nms (to streaming state)
+2: Khi nguoi nhan host accept (to waiting state)
+3: khi close room (to stopped state)
+
+#### Co-host across rooms
+
